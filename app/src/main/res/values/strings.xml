@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AdvertismentUpdater</string>
+    <string name="play_circle_btn">Play icon, use like button to start</string>
+    <string name="txt_header_main">Header Main text</string>
+</resources>
