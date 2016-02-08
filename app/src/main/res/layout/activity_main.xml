@@ -9,11 +9,28 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".View.MainActivity">
 
+    <fragment
+        android:id="@+id/header_frgmt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.andrusenko.advertismentupdater.View.Fragments.HeaderFragment"
+        tools:layout="@layout/fragment_header" />
+
     <LinearLayout
         android:orientation="vertical"
+        android:layout_below="@id/header_frgmt"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:id="@+id/FragmContainer"/>
+        android:id="@+id/FragmContainer"
+        android:layout_marginTop="1dp">
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.andrusenko.advertismentupdater.View.Fragments.BodyFragment"
+            tools:layout="@layout/fragment_body" />
+
+    </LinearLayout>
 
 </RelativeLayout>

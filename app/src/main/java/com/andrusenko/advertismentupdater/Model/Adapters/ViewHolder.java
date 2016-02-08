@@ -1,4 +1,4 @@
-package com.andrusenko.advertismentupdater.Model;
+package com.andrusenko.advertismentupdater.Model.Adapters;
 
 public class ViewHolder {
     public String DOMAIN;

@@ -1,4 +1,4 @@
-package com.andrusenko.advertismentupdater.Adapters;
+package com.andrusenko.advertismentupdater.Model.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.andrusenko.advertismentupdater.Model.ViewHolder;
 import com.andrusenko.advertismentupdater.R;
 
 import java.util.List;
@@ -18,15 +17,17 @@ import butterknife.ButterKnife;
 
 public class SitesStatsAdapter extends BaseAdapter {
 
+    @Bind(R.id.txtLIDomain)
+    TextView txtDomain;
+    @Bind(R.id.txtLIDescription)
+    TextView txtDescription;
+    @Bind(R.id.imgLIicon)
+    ImageView imgIcon;
     private LayoutInflater inflater;
     private Context context;
     private List<ViewHolder> elements;
 
-    @Bind(R.id.txtLIDomain) TextView txtDomain;
-    @Bind(R.id.txtLIDescription) TextView txtDescription;
-    @Bind(R.id.imgLIicon) ImageView imgIcon;
-
-    public SitesStatsAdapter(Context context, List<ViewHolder> elements){
+    public SitesStatsAdapter(Context context, List<ViewHolder> elements) {
         this.elements = elements;
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -58,7 +59,7 @@ public class SitesStatsAdapter extends BaseAdapter {
         txtDomain.setText(hold.DOMAIN);
         txtDescription.setText(hold.STATS);
 
-        if(hold.CONFIGURED){
+        if (hold.CONFIGURED) {
             // DEFAULT ICON IS OK! Site is configured.
         } else {
             // CHANGE ICON TO Unconfirmed website!
