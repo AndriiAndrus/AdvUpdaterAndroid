@@ -29,7 +29,7 @@
         android:id="@+id/editTextEmail"
         android:layout_gravity="center_horizontal"
         android:layout_margin="15dp"
-        android:hint="Ваш email" />
+        android:hint="Ваш email"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
         android:id="@+id/editTextPassword"
         android:layout_gravity="center_horizontal"
         android:layout_margin="15dp"
-        android:hint="Ваш пароль:" />
+        android:hint="Ваш пароль:"/>
 
     <LinearLayout
         android:orientation="horizontal"

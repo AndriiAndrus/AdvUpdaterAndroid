@@ -6,8 +6,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 import com.andrusenko.advertismentupdater.Model.Adapters.ViewHolder;
+import com.andrusenko.advertismentupdater.Model.Web.AsyncHttpCall;
 import com.andrusenko.advertismentupdater.Model.db.RxDatabase;
 import com.andrusenko.advertismentupdater.Presenter.PresenterMain;
 import com.andrusenko.advertismentupdater.R;
@@ -35,11 +37,11 @@ public class MainActivity extends FragmentActivity {
 
         FlatUI.initDefaultValues(this);
         FlatUI.setDefaultTheme(FlatUI.GRAPE);
-        try {
-            getActionBar().setBackgroundDrawable(FlatUI.getActionBarDrawable(this, FlatUI.GRAPE, true));
-        } catch (Exception e) { /* Standart theame will be used */ }
-
         setContentView(R.layout.activity_main);
+
+        try {
+            getActionBar().setBackgroundDrawable(FlatUI.getActionBarDrawable(this, FlatUI.GRAPE, false, 2));
+        } catch (Exception e) { /* Standart theame of ActionBar will be used */ }
 
         presenter = new PresenterMain(getApplicationContext());
         fragmentManager = getSupportFragmentManager();
@@ -50,6 +52,16 @@ public class MainActivity extends FragmentActivity {
         bodyContentFragment.setMain(this);
 
         setDefaultFragmentState();
+        //TODO delete DEMO
+        AsyncHttpCall callDemo = new AsyncHttpCall();
+        callDemo.execute("param");
+        String resultin;
+        try {
+            resultin = callDemo.get();
+        } catch (Exception e) {
+            resultin = e.getMessage();
+        }
+        Toast.makeText(getApplicationContext(), resultin, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -67,9 +79,18 @@ public class MainActivity extends FragmentActivity {
                 break;
             case R.id.btnSubmitData :
                 // Save email and password for current website
+                String domain = PresenterMain.getCurrentClickedVH().DOMAIN;
+                String login = webDataFragment.editEmail.getText().toString();
+                String password = webDataFragment.editPassword.getText().toString();
+               boolean status = presenter.configuredWebsite(domain, login, password);
+                if(status) {
+                    Toast.makeText(getApplicationContext(), "Учетная запись успешно добавлена!", Toast.LENGTH_LONG).show();
+                    fragmentTransaction.replace(R.id.bodyContentContainer, bodyContentFragment, BodyContentFragment.TAG);
+                }else{
+                    Toast.makeText(getApplicationContext(), "При добавлении вашей учетной записи произошла ошибка!", Toast.LENGTH_LONG).show();
+                }
                 break;
         }
-
         fragmentTransaction.commit();
     }
 
