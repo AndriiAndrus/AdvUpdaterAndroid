@@ -3,4 +3,4 @@ This is my Android app to automate updating of advertisment on the different web
 
 In this project i want to learn Reactive Java programming (RxAndroid), lambdas, sqlbrite (reactive SQLite).
 
-Also my target is learn to use Android dev patterns (like MVP).
+Also my goal is to learn how to use Android dev patterns (like MVP).
