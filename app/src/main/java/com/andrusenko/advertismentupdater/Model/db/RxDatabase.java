@@ -32,7 +32,6 @@ public class RxDatabase {
         users.subscribe(new Action1<SqlBrite.Query>() {
             @Override public void call(SqlBrite.Query query) {
                 Cursor cursor = query.run();
-                // TODO parse data...
                 if(cursor.moveToFirst()) {
                     do {
                         String domain = cursor.getString(1);
@@ -54,7 +53,6 @@ public class RxDatabase {
 
     public void addNew(String domain){
         ContentValues values = new ContentValues();
-       // values.put(DbOpenHelper.COL_ID, 0);
         values.put(DbOpenHelper.COL_DOMAIN, domain);
         values.put(DbOpenHelper.COL_ACTIVE, "false");
         values.put(DbOpenHelper.COL_STATS, 0);
@@ -65,28 +63,23 @@ public class RxDatabase {
 
     public void updateStats(String domain, int stats){
         ContentValues values = new ContentValues();
-       // values.put(DbOpenHelper.COL_DOMAIN, domain);
         values.put(DbOpenHelper.COL_STATS, stats);
 
         String selection = DbOpenHelper.COL_DOMAIN+" = ?";
-        String[] selectionArgs = { "" + domain };
+        String[] selectionArgs = { domain };
 
         db.update(DbOpenHelper.TBL_NAME, values, selection, selectionArgs);
     }
 
     public void addNew(String domain, String login, String passwd){
         ContentValues values = new ContentValues();
-       // values.put(DbOpenHelper.COL_ID, 0);
-       // values.put(DbOpenHelper.COL_DOMAIN, domain);
         values.put(DbOpenHelper.COL_ACTIVE, "true");
-       // values.put(DbOpenHelper.COL_STATS, 0);
         values.put(DbOpenHelper.COL_LOGIN, login);
         values.put(DbOpenHelper.COL_PASSWORD, passwd);
 
         String selection = DbOpenHelper.COL_DOMAIN+" = ?";
-        String[] selectionArgs = { "" + domain };
+        String[] selectionArgs = { domain };
 
         db.update(DbOpenHelper.TBL_NAME, values, selection, selectionArgs);
-      //  db.insert(DbOpenHelper.TBL_NAME, values);
     }
 }
