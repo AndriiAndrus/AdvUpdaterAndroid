@@ -25,8 +25,8 @@ public class AsyncHttpCall extends AsyncTask<String, String, String> {
         // This will be personal for each site
         RequestBody formBody = new FormBody.Builder()
                 .add("authentification", "1")
-                .add("email", "Paveldom14@gmail.com")
-                .add("password", "14dom")
+                .add("email", "email")
+                .add("password", "pass")
                 .add("remember", "1")
         .build();
 
