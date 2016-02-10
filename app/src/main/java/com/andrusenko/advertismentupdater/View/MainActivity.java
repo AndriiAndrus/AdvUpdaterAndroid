@@ -20,9 +20,6 @@ import com.cengalabs.flatui.FlatUI;
 
 public class MainActivity extends FragmentActivity {
 
-    // SHOULD NOT BE HERE!
-    private RxDatabase rxDatabase;
-
     private PresenterMain presenter;
 
     private BodyFragment bodyFragment;
@@ -41,7 +38,9 @@ public class MainActivity extends FragmentActivity {
 
         try {
             getActionBar().setBackgroundDrawable(FlatUI.getActionBarDrawable(this, FlatUI.GRAPE, false, 2));
-        } catch (Exception e) { /* Standart theame of ActionBar will be used */ }
+        } catch (Exception e) { 
+            Log.d("MainActivity", "Error while setup custom ActionBar");
+            /* Standart theame of ActionBar will be used */ }
 
         presenter = new PresenterMain(getApplicationContext());
         fragmentManager = getSupportFragmentManager();
