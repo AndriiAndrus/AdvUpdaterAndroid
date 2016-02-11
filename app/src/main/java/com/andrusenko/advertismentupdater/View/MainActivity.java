@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.andrusenko.advertismentupdater.Model.Adapters.ViewHolder;
 import com.andrusenko.advertismentupdater.Model.Web.AsyncHttpCall;
 import com.andrusenko.advertismentupdater.Presenter.PresenterMain;
 import com.andrusenko.advertismentupdater.R;
@@ -95,11 +94,11 @@ public class MainActivity extends FragmentActivity {
                 break;
             case R.id.list_item_rlayout :
               TextView txtDomain = (TextView) view.findViewById(R.id.txtLIDomain);
-              ViewHolder viewHold = bodyContentFragment._adapter.getViewHolderByDomain(txtDomain.getText().toString());
-                PresenterMain.setCurrentClickedVH(viewHold);
-              //  webDataFragment = new WebDataFragment();
-                if (fragmentManager.findFragmentByTag(WebDataFragment.TAG) == null)
-                    fragmentTransaction.replace(R.id.bodyContentContainer, webDataFragment, WebDataFragment.TAG);
+                    PresenterMain.setCurrentClickedVH(txtDomain.getText().toString());
+                    //  webDataFragment = new WebDataFragment();
+                    if (fragmentManager.findFragmentByTag(WebDataFragment.TAG) == null)
+                        fragmentTransaction.replace(R.id.bodyContentContainer, webDataFragment, WebDataFragment.TAG);
+
                 break;
         }
       //  fragmentTransaction.addToBackStack("onClickFragmentChanger");
@@ -109,7 +108,9 @@ public class MainActivity extends FragmentActivity {
     private void setDefaultFragmentState(){
         // Transaction begin
         fragmentTransaction = fragmentManager.beginTransaction();
-        if (fragmentManager.findFragmentByTag(BodyContentFragment.TAG) == null)
+
+        if (fragmentManager.findFragmentByTag(BodyContentFragment.TAG) == null
+                && fragmentManager.findFragmentByTag(WebDataFragment.TAG) == null)
             fragmentTransaction.add(R.id.bodyContentContainer, bodyContentFragment, BodyContentFragment.TAG);
 
        // fragmentTransaction.addToBackStack("setDefaultFragmentState");

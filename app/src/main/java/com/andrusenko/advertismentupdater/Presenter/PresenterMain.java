@@ -17,6 +17,7 @@ public class PresenterMain {
     private static ViewHolder currentClickedVH;
     private Context context;
     private RxDatabase dbModel;
+    private static List<ViewHolder> elements;
 
     public PresenterMain(Context context){
         this.context = context;
@@ -51,6 +52,7 @@ public class PresenterMain {
         List<ViewHolder> temp;
         try{
             temp = dbModel.getAllData();
+            elements = temp;
         }catch(Exception ex) {
         /* Lets return empty list */
             temp = new ArrayList<>();
@@ -64,7 +66,11 @@ public class PresenterMain {
     public static ViewHolder getCurrentClickedVH() {
         return currentClickedVH;
     }
-    public static void setCurrentClickedVH(ViewHolder currentClickedVH) {
-        PresenterMain.currentClickedVH = currentClickedVH;
+
+    public static void setCurrentClickedVH(String domain) {
+        for (ViewHolder viewHold : elements) {
+            if (viewHold.DOMAIN.equals(domain))
+                currentClickedVH = viewHold;
+        }
     }
 }

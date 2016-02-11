@@ -33,15 +33,6 @@ public class SitesStatsAdapter extends BaseAdapter {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public ViewHolder getViewHolderByDomain(String domain){
-        ViewHolder hold = null;
-        for (ViewHolder viewHold : elements) {
-            if(viewHold.DOMAIN.equals(domain))
-                hold = viewHold;
-        }
-        return hold;
-    }
-
     @Override
     public int getCount() {
         return elements.size();
