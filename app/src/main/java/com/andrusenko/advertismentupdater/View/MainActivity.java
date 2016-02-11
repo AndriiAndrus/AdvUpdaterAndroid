@@ -4,17 +4,17 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andrusenko.advertismentupdater.Model.Adapters.ViewHolder;
 import com.andrusenko.advertismentupdater.Model.Web.AsyncHttpCall;
-import com.andrusenko.advertismentupdater.Model.db.RxDatabase;
 import com.andrusenko.advertismentupdater.Presenter.PresenterMain;
 import com.andrusenko.advertismentupdater.R;
 import com.andrusenko.advertismentupdater.View.Fragments.BodyContentFragment;
-import com.andrusenko.advertismentupdater.View.Fragments.BodyFragment;
 import com.andrusenko.advertismentupdater.View.Fragments.WebDataFragment;
 import com.cengalabs.flatui.FlatUI;
 
@@ -22,11 +22,15 @@ public class MainActivity extends FragmentActivity {
 
     private PresenterMain presenter;
 
-    private BodyFragment bodyFragment;
     private BodyContentFragment bodyContentFragment;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private WebDataFragment webDataFragment;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +43,19 @@ public class MainActivity extends FragmentActivity {
         try {
             getActionBar().setBackgroundDrawable(FlatUI.getActionBarDrawable(this, FlatUI.GRAPE, false, 2));
         } catch (Exception e) { 
-            Log.d("MainActivity", "Error while setup custom ActionBar");
-            /* Standart theame of ActionBar will be used */ }
+            Log.d("MainActivity", "Error while setup custom ActionBar", e);
+            /* Standart theame of ActionBar will be used */
+        }
 
         presenter = new PresenterMain(getApplicationContext());
-        fragmentManager = getSupportFragmentManager();
 
+        fragmentManager = getSupportFragmentManager();
         webDataFragment = new WebDataFragment();
-        bodyFragment = new BodyFragment();
         bodyContentFragment = new BodyContentFragment();
         bodyContentFragment.setMain(this);
 
         setDefaultFragmentState();
+
         //TODO delete DEMO
         AsyncHttpCall callDemo = new AsyncHttpCall();
         callDemo.execute("param");
@@ -71,7 +76,6 @@ public class MainActivity extends FragmentActivity {
 
     public void onClickFragmentChanger(View view){
         fragmentTransaction = fragmentManager.beginTransaction();
-
         switch(view.getId()){
             case R.id.btnCancelData :
                 fragmentTransaction.replace(R.id.bodyContentContainer, bodyContentFragment, BodyContentFragment.TAG);
@@ -89,30 +93,26 @@ public class MainActivity extends FragmentActivity {
                     Toast.makeText(getApplicationContext(), "При добавлении вашей учетной записи произошла ошибка!", Toast.LENGTH_LONG).show();
                 }
                 break;
+            case R.id.list_item_rlayout :
+              TextView txtDomain = (TextView) view.findViewById(R.id.txtLIDomain);
+              ViewHolder viewHold = bodyContentFragment._adapter.getViewHolderByDomain(txtDomain.getText().toString());
+                PresenterMain.setCurrentClickedVH(viewHold);
+              //  webDataFragment = new WebDataFragment();
+                if (fragmentManager.findFragmentByTag(WebDataFragment.TAG) == null)
+                    fragmentTransaction.replace(R.id.bodyContentContainer, webDataFragment, WebDataFragment.TAG);
+                break;
         }
+      //  fragmentTransaction.addToBackStack("onClickFragmentChanger");
         fragmentTransaction.commit();
     }
 
     private void setDefaultFragmentState(){
         // Transaction begin
         fragmentTransaction = fragmentManager.beginTransaction();
-
         if (fragmentManager.findFragmentByTag(BodyContentFragment.TAG) == null)
             fragmentTransaction.add(R.id.bodyContentContainer, bodyContentFragment, BodyContentFragment.TAG);
 
-        fragmentTransaction.commit();
-        //end
-    }
-
-   public void setListItemClick(ViewHolder vhold){
-        // Transaction begin
-        fragmentTransaction = fragmentManager.beginTransaction();
-      //  fragmentTransaction.remove(bodyContentFragment);
-       PresenterMain.setCurrentClickedVH(vhold);
-       if (fragmentManager.findFragmentByTag(WebDataFragment.TAG) == null)
-       fragmentTransaction.replace(R.id.bodyContentContainer, webDataFragment, WebDataFragment.TAG);
-       // Creating webDataFragment using current static CurrentViewHolder
-      //  fragmentTransaction.add(R.id.bodyContentContainer, webDataFragment, WebDataFragment.TAG);
+       // fragmentTransaction.addToBackStack("setDefaultFragmentState");
         fragmentTransaction.commit();
         //end
     }

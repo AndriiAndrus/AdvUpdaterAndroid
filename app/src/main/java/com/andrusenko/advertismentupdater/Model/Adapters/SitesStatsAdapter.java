@@ -33,6 +33,15 @@ public class SitesStatsAdapter extends BaseAdapter {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    public ViewHolder getViewHolderByDomain(String domain){
+        ViewHolder hold = null;
+        for (ViewHolder viewHold : elements) {
+            if(viewHold.DOMAIN.equals(domain))
+                hold = viewHold;
+        }
+        return hold;
+    }
+
     @Override
     public int getCount() {
         return elements.size();
@@ -54,7 +63,7 @@ public class SitesStatsAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.list_item_site, parent, false);
         }
         ButterKnife.bind(this, view);
-        ViewHolder hold = (ViewHolder) getItem(position);
+       ViewHolder hold = (ViewHolder) getItem(position);
 
         txtDomain.setText(hold.DOMAIN);
         txtDescription.setText(hold.STATS);

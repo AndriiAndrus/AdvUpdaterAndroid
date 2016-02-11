@@ -33,7 +33,7 @@ public class WebDataFragment extends Fragment {
         txtDomain.setText(PresenterMain.getCurrentClickedVH().DOMAIN);
         String status;
         if (PresenterMain.getCurrentClickedVH().CONFIGURED) {
-            status = "Успешно настроен, работает | " + PresenterMain.getCurrentClickedVH().STATS;
+            status = "Успешно настроен | " + PresenterMain.getCurrentClickedVH().STATS;
         } else {
             status = "Введите учетные данные для начала работы.";
         }

@@ -29,19 +29,18 @@ public class AsyncHttpCall extends AsyncTask<String, String, String> {
                 .add("password", "pass")
                 .add("remember", "1")
         .build();
-
         /* DEMO, just to test. DELETE soon
         */
         try {
-            String siteGetAnswer = run("http://domik.ua/cabinet/");
+            String siteGetAnswer = run("http://domik.ua/nedvizhimost/appleIndex.html");
             Log.d("siteAnswerGet", siteGetAnswer);
-            String sitePostAnswer = post("http://domik.ua/data/auth/", formBody);
-            Log.d("siteAnswerPost", sitePostAnswer);
-            siteGetAnswer = run("http://domik.ua/cabinet/");
-            Log.d("siteAnswerGet", siteGetAnswer);
-            String checkValidString = "a href=\"/data/exit/\" title=";
+            Response sitePostAnswer = post("http://domik.ua/data/auth/", formBody);
+            Log.d("siteAnswerPost.body", sitePostAnswer.body().string());
+             //siteGetAnswer = run("http://domik.ua/cabinet/");
+         //     Log.d("siteAnswerGet", siteGetAnswer);
+            String checkValidString = "apple";
           // return siteGetAnswer;
-            if(sitePostAnswer.contains(checkValidString)){
+            if(sitePostAnswer.body().string().contains(checkValidString)){
                 return "domik.ua/cabinet contain data/exit/!";
            }
         } catch (IOException e) {
@@ -62,7 +61,7 @@ public class AsyncHttpCall extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    String post(String url, RequestBody formBody) throws IOException {
+    Response post(String url, RequestBody formBody) throws IOException {
 
         String returnMe;
 
@@ -72,8 +71,8 @@ public class AsyncHttpCall extends AsyncTask<String, String, String> {
                 .build();
 
             Response response = client.newCall(request).execute();
-            returnMe = response.body().string();
+           // returnMe = response.body().string();
 
-        return returnMe;
+        return response;
     }
 }
