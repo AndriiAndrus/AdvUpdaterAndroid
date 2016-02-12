@@ -7,6 +7,7 @@ import java.net.CookiePolicy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
@@ -40,6 +41,9 @@ public class OkHttpWithCookies {
                         return cookies != null ? cookies : new ArrayList<Cookie>();
                     }
                 })
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build();
 
         return client;

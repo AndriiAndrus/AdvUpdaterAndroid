@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.andrusenko.advertismentupdater.Model.Web.AsyncHttpCall;
 import com.andrusenko.advertismentupdater.Presenter.PresenterMain;
 import com.andrusenko.advertismentupdater.R;
 import com.andrusenko.advertismentupdater.View.Fragments.BodyContentFragment;
@@ -37,12 +36,12 @@ public class MainActivity extends FragmentActivity {
 
         FlatUI.initDefaultValues(this);
         FlatUI.setDefaultTheme(FlatUI.GRAPE);
-        setContentView(R.layout.activity_main);
 
         try {
+            setContentView(R.layout.activity_main);
             getActionBar().setBackgroundDrawable(FlatUI.getActionBarDrawable(this, FlatUI.GRAPE, false, 2));
         } catch (Exception e) { 
-            Log.d("MainActivity", "Error while setup custom ActionBar", e);
+            Log.d("MainActivity", "Error while setup custom ActionBar||ContentView", e);
             /* Standart theame of ActionBar will be used */
         }
 
@@ -56,6 +55,7 @@ public class MainActivity extends FragmentActivity {
         setDefaultFragmentState();
 
         //TODO delete DEMO
+        /*
         AsyncHttpCall callDemo = new AsyncHttpCall();
         callDemo.execute("param");
         String resultin;
@@ -65,6 +65,7 @@ public class MainActivity extends FragmentActivity {
             resultin = e.getMessage();
         }
         Toast.makeText(getApplicationContext(), resultin, Toast.LENGTH_LONG).show();
+        */
     }
 
     @Override
@@ -74,16 +75,29 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void onClickFragmentChanger(View view){
+
         fragmentTransaction = fragmentManager.beginTransaction();
+
         switch(view.getId()){
+
             case R.id.btnCancelData :
                 fragmentTransaction.replace(R.id.bodyContentContainer, bodyContentFragment, BodyContentFragment.TAG);
-                break;
+            break;
+
             case R.id.btnSubmitData :
                 // Save email and password for current website
                 String domain = PresenterMain.getCurrentClickedVH().DOMAIN;
                 String login = webDataFragment.editEmail.getText().toString();
                 String password = webDataFragment.editPassword.getText().toString();
+
+                if(domain.isEmpty() || domain == null){
+                    Log.d("MainActivity", "domain.isEmpty() || domain == null");
+                } else if(login.isEmpty() || login == null){
+                    Log.d("MainActivity", "login.isEmpty() || login == null");
+                } else if(password.isEmpty() || password == null){
+                    Log.d("MainActivity", "password.isEmpty() || password == null");
+                }
+
                boolean status = presenter.configuredWebsite(domain, login, password);
                 if(status) {
                     Toast.makeText(getApplicationContext(), "Учетная запись успешно добавлена!", Toast.LENGTH_LONG).show();
@@ -91,17 +105,21 @@ public class MainActivity extends FragmentActivity {
                 }else{
                     Toast.makeText(getApplicationContext(), "При добавлении вашей учетной записи произошла ошибка!", Toast.LENGTH_LONG).show();
                 }
-                break;
+            break;
+
             case R.id.list_item_rlayout :
+            Log.d("MainActivity", "list_item_rlayout CLICK!");
+
               TextView txtDomain = (TextView) view.findViewById(R.id.txtLIDomain);
-                    PresenterMain.setCurrentClickedVH(txtDomain.getText().toString());
-                    //  webDataFragment = new WebDataFragment();
+               PresenterMain.setCurrentClickedVH(txtDomain.getText().toString());
+                webDataFragment = new WebDataFragment();
+
                     if (fragmentManager.findFragmentByTag(WebDataFragment.TAG) == null)
                         fragmentTransaction.replace(R.id.bodyContentContainer, webDataFragment, WebDataFragment.TAG);
 
-                break;
+             break;
         }
-      //  fragmentTransaction.addToBackStack("onClickFragmentChanger");
+        fragmentTransaction.addToBackStack("onClickFragmentChanger");
         fragmentTransaction.commit();
     }
 

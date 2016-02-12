@@ -26,6 +26,30 @@ public class RxDatabase {
         db = sqlBrite.wrapDatabaseHelper(openHelper);
     }
 
+    public List<String> getUserPassByDomain(String domain){
+        List<String> userPassList = new ArrayList<>();
+        Observable<SqlBrite.Query> users = db.createQuery(DbOpenHelper.TBL_NAME, "SELECT * FROM "+DbOpenHelper.TBL_NAME);
+        users.subscribe(new Action1<SqlBrite.Query>() {
+            @Override public void call(SqlBrite.Query query) {
+                Cursor cursor = query.run();
+                if(cursor.moveToFirst()) {
+                    do {
+                        String ddomain = cursor.getString(1);
+                        if(ddomain.equals(domain)) {
+                            String login = cursor.getString(4);
+                            String passwd = cursor.getString(5);
+                            userPassList.add(login);
+                            userPassList.add(passwd);
+                        }
+                    }
+                    while (cursor.moveToNext());
+                }
+                cursor.close();
+            }
+        });
+        return userPassList;
+    }
+
     public List<ViewHolder> getAllData(){
         List<ViewHolder> tempList = new ArrayList<ViewHolder>();
         Observable<SqlBrite.Query> users = db.createQuery(DbOpenHelper.TBL_NAME, "SELECT * FROM "+DbOpenHelper.TBL_NAME);

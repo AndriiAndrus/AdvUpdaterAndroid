@@ -18,10 +18,12 @@ public class PresenterMain {
     private Context context;
     private RxDatabase dbModel;
     private static List<ViewHolder> elements;
+    private PresenterWebWorker webWorker;
 
     public PresenterMain(Context context){
         this.context = context;
         dbModel = new RxDatabase(context);
+        webWorker = new PresenterWebWorker(dbModel);
         SharedPreferences prefs = context.getSharedPreferences("com.andrusenko.advertismentupdater", Context.MODE_PRIVATE);
         boolean firstRun = prefs.getBoolean("firstRun", true);
         if (firstRun) {
@@ -30,13 +32,13 @@ public class PresenterMain {
     }
 
     public boolean configuredWebsite(String domain, String login, String passwd){
-        boolean isOkay = true;
+        boolean isOkay = false;
         try {
             dbModel.addNew(domain, login, passwd);
+            isOkay = webWorker.checkValid(domain);
             // We will need to check login-pass valid later
         } catch(Exception ex){
-            Log.d("dbModel", "Error addNew user/pass:"+ex.getMessage());
-            isOkay = false;
+            Log.d("Presenter", "Error addNew user/pass", ex);
         }
         return isOkay;
     }
